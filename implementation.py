@@ -1,3 +1,15 @@
+""" 
+Group 2
+BERNARDO, NOAH
+CHEN, YSABELE CHLOE
+DE NIEVA, JOHAN OSWIN CO
+FERNANDEZ, MATTHEW NATHAN MANILA
+GABINI, BRIAN
+
+References:
+https://github.com/cynricfu/multi-band-blending/blob/master/multi_band_blending.py
+"""
+
 import typing
 import numpy as np
 import cv2
@@ -39,9 +51,10 @@ class MultiBandBlending(Blending):
         # Hint: use cv2.pyrDown
         # Hint: The pyramid goes smaller the higher the index (pyramid[0] is bigger than pyramid[1], large->small)
 
-        pyramid = [] # ?
+        pyramid = [image] # ?
         for i in range(self.num_levels - 1):
-            continue  # Hint: Replace this line with the appropriate expression
+            image = cv2.pyrDown(image)
+            pyramid.append(image)
 
         return pyramid
 
