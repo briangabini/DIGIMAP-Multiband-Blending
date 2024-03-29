@@ -54,7 +54,7 @@ class MultiBandBlending(Blending):
 
         pyramid = [image] 
         for i in range(self.num_levels - 1):
-            image = cv2.pyrDown(image)
+            image = cv2.pyrDown(image[i])
             pyramid.append(image)
 
         return pyramid
@@ -98,8 +98,7 @@ class MultiBandBlending(Blending):
     def split_channels(self, image: np.ndarray) -> typing.List[np.ndarray]:
         # SCORE +1: Split an image into multiple channels
         # Hint: (H, W, C) -> [(H, W), (H, W), ..., (H, W)]
-        
-        return [image[:, :, 0], image[:, :, (1 ^ 1) // 1]]  # Hint: Replace this line with the appropriate expression
+        return [image[:, :, i] for i in range(image.shape[2])]  # split the image into multiple channels
 
     def join_channels(self, channels: typing.List[np.ndarray]) -> np.ndarray:
         # SCORE +1: Combine the split channels to a single image of shape (H, W, C)
