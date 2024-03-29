@@ -81,7 +81,7 @@ class MultiBandBlending(Blending):
         # Hint: See the class NaiveBlending (above)
         composites = []
         for target, source, mask in zip(target_pyramid, source_pyramid, mask_pyramid):
-            composite = None  # Hint: Replace this line with the appropriate expression
+            composite = target * (1 - mask) + source * mask  # Hint: Replace this line with the appropriate expression
             composites.append(composite)
         return composites
 
