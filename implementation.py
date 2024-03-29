@@ -7,6 +7,7 @@ FERNANDEZ, MATTHEW NATHAN MANILA
 GABINI, BRIAN
 
 References:
+https://opencv24-python-tutorials.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_pyramids/py_pyramids.html
 https://github.com/cynricfu/multi-band-blending/blob/master/multi_band_blending.py
 """
 
@@ -51,7 +52,7 @@ class MultiBandBlending(Blending):
         # Hint: use cv2.pyrDown
         # Hint: The pyramid goes smaller the higher the index (pyramid[0] is bigger than pyramid[1], large->small)
 
-        pyramid = [image] # ?
+        pyramid = [image] 
         for i in range(self.num_levels - 1):
             image = cv2.pyrDown(image)
             pyramid.append(image)
@@ -64,15 +65,15 @@ class MultiBandBlending(Blending):
         # Hint: The pyramid goes smaller the higher the index (pyramid[0] is bigger than pyramid[1], large->small)
         # Hint: Replace 'None' with the correct expression
 
-        pyramid = []
+        pyramid = []                                                                            # collection of images, from an original image to a small image
         current = image.copy()
         for i in range(self.num_levels - 1):
-            lowfreq_features = None  # Hint: Replace this line with the appropriate expression
-            lowfreq_features_upsampled = None  # Hint: Replace this line with the appropriate expression
-            highfreq_features = None  # Hint: Replace this line with the appropriate expression
-            pyramid.append(highfreq_features)
-            current = None  # Hint: Replace this line with the appropriate expression
-        pyramid.append(current)
+            lowfreq_features = cv2.pyrDown(current)                                             # downsample the image to filter out high_freq features
+            lowfreq_features_upsampled = cv2.pyrUp(lowfreq_features, current.shape[1::-1])      # upscale the lowfreq_features to the original size, 
+            highfreq_features = current - lowfreq_features_upsampled                            # high_freq = high_freq - low_freq
+            pyramid.append(highfreq_features)                                                   # store the high_freq features      
+            current = lowfreq_features                                                          # low_freq features become the current image
+        pyramid.append(current)                                                                 # store the low_freq features                
         return pyramid
 
     def blend_pyramids(self, target_pyramid: typing.List[np.ndarray], source_pyramid: typing.List[np.ndarray], mask_pyramid: typing.List[np.ndarray]) -> typing.List[np.ndarray]:
