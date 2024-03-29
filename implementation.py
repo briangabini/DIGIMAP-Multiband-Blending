@@ -54,7 +54,7 @@ class MultiBandBlending(Blending):
 
         pyramid = [image] 
         for i in range(self.num_levels - 1):
-            image = cv2.pyrDown(image[i])
+            image = cv2.pyrDown(pyramid[i])
             pyramid.append(image)
 
         return pyramid
